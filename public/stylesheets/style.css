@@ -1,0 +1,30 @@
+html,
+body {
+  height: 100%;
+}
+
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+}
+
+#test {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 200px;
+  height: 80px;
+  z-index: 2;
+}
+
+#test input {
+  width : 100%;
+}
+
+.leaflet-popup-content p{
+  margin: 0 !important;
+}
