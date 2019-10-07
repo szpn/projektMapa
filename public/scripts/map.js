@@ -28,9 +28,10 @@ function formatNumber(n) {
 generatePopupString = function(layer){
     let debugCountryControlString = '<p>dodaj/usun mieszkańców(-∞ to +∞)</p> <input type="number" id="popToAdd")"></input> <input type="button" value="dodaj/usun" onClick="modifyPopulation(' + layer._leaflet_id +')"></input>'
 
-    let countryName = layer.feature.properties.NAME
-    let countryPopulation =  formatNumber(layer.feature.properties.POP2005)
-    let popupString = "<p>Country: " + countryName + "</p><p> Population: " + countryPopulation + "</p>"
+    let countryName = layer.feature.properties.NAME;
+    let countryPopulation =  formatNumber(layer.feature.properties.POP2005);
+    let countryArea = layer.feature.properties.AREA
+    let popupString = "<p>Country: " + countryName + "</p><p> Population: " + countryPopulation + "</p><p> Pole powierzchni: " + countryArea + "</p>"
     return popupString + debugCountryControlString
 }
 
@@ -102,6 +103,9 @@ sendNuke = function(){
 }
 
 modifyPopulation = function(countryID){
+    let layer = map._layers[countryID]
+
     let amount = document.getElementById("popToAdd").value;
-    map._layers[countryID].feature.properties.POP2005 -= parseInt(amount)
+    layer.feature.properties.POP2005 += parseInt(amount)
+
 }
