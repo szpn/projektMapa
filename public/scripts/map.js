@@ -2,7 +2,9 @@ let nukeLat = document.getElementById("nukeLat");
 let NukeLon = document.getElementById("nukeLon");
 let nukeR = document.getElementById("nukeR");
 
+let mapBounds = L.latLngBounds([-90,-180 ], [90,180]);
 let map = L.map("map").setView([0, 0], 3); // ([lat, lon], zoom)
+map.setMaxBounds(mapBounds);
 L.tileLayer("https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=baP93CSTHELEJPXKpzIR", {
     attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">© MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">© OpenStreetMap contributors</a>'
 }).addTo(map);
@@ -109,3 +111,53 @@ modifyPopulation = function(countryID){
     layer.feature.properties.POP2005 += parseInt(amount)
 
 }
+
+// https://gist.github.com/ryancatalani/6091e50bf756088bf9bf5de2017b32e6
+var latlngs = [];
+
+var latlng1 = [0, -150],
+	latlng2 = [0, 70];
+
+var offsetX = latlng2[1] - latlng1[1],
+	offsetY = latlng2[0] - latlng1[0];
+
+var r = Math.sqrt( Math.pow(offsetX, 2) + Math.pow(offsetY, 2) ),
+	theta = Math.atan2(offsetY, offsetX);
+
+var thetaOffset = (3.14/10);
+
+var r2 = (r/2)/(Math.cos(thetaOffset)),
+	theta2 = theta + thetaOffset;
+
+var midpointX = (r2 * Math.cos(theta2)) + latlng1[1],
+	midpointY = (r2 * Math.sin(theta2)) + latlng1[0];
+
+var midpointLatLng = [midpointY, midpointX];
+
+latlngs.push(latlng1, midpointLatLng, latlng2);
+
+var pathOptions = {
+	color: 'rgba(0,0,0,0.9)',
+	weight: 4
+}
+
+if (typeof document.getElementById('map').animate === "function") { 
+	var durationBase = 2000;
+   	var duration = Math.sqrt(Math.log(r)) * durationBase;
+	// Scales the animation duration so that it's related to the line length
+	// (but such that the longest and shortest lines' durations are not too different).
+   	// You may want to use a different scaling factor.
+  	pathOptions.animate = {
+		duration: duration,
+		iterations: 1,
+		easing: 'ease-in',
+	}
+}
+
+var curvedPath = L.curve(
+	[
+		'M', latlng1,
+		'Q', midpointLatLng,
+			 latlng2
+    ], pathOptions).addTo(map);
+    // ---------------------------------------------------------------------------
