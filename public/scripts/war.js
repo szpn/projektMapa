@@ -72,6 +72,18 @@ class Game{
         return targetCountry
     }
 
+    generateRandomPosition = function(country){
+        let bounds = country.getBounds()
+        let x_max = bounds.getEast();
+        let x_min = bounds.getWest();
+        let y_max = bounds.getSouth();
+        let y_min = bounds.getNorth();
+        let lat = y_min + (Math.random() * (y_max - y_min));
+        let lng = x_min + (Math.random() * (x_max - x_min));
+
+        return [lat,lng]
+    }
+
     generateNukeParameters = function(){
         let nukeIndex = Math.floor(Math.random() * 8)
         let nukeType; // 0 - AT1 1 - AT2 2 - AT3
@@ -110,8 +122,11 @@ class Game{
             targetCountry.feature.properties.POP2005 -= countryCasualities
         }
         this.casualities += countryCasualities
-        createNukePath(startingCountry.feature.properties.LAT, startingCountry.feature.properties.LON, targetCountry.feature.properties.LAT, targetCountry.feature.properties.LON)
-        addCircle(targetCountry.feature.properties.LAT, targetCountry.feature.properties.LON, nukeRadiuses[nukeType], "black")
+
+        let startCountryCoords = this.generateRandomPosition(startingCountry)
+        let targetCountryBombCoords = this.generateRandomPosition(targetCountry)
+        createNukePath(startCountryCoords[0], startCountryCoords[1],targetCountryBombCoords[0] , targetCountryBombCoords[1])
+        addCircle(targetCountryBombCoords[0], targetCountryBombCoords[1], nukeRadiuses[nukeType], "black")
     }
 
     updateP = function(){
@@ -126,12 +141,14 @@ class Game{
 
 }
 
-let sentNukes = 1
+let sentNukes = 0
 startWar = function(){
-    G.run()
-   setInterval(function(){
-       sentNukes++;
-       G.run()
-   }, 5000/Math.pow(sentNukes,1/2)); 
+    for(let i = 1; i < 1000; i++){
+        setTimeout(function(){
+            sentNukes++;
+            G.run()
+        }, 5000/Math.pow(i,1/4) * i);
+
+    }
 }
 
