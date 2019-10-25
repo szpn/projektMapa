@@ -96,7 +96,7 @@ class Game{
         let nukeType = a[2]
         let nukeRadiuses = [100000,10000,1000]
         let nukePower = [100000,1000,10]
-        let countryCasualities = nukePower[nukeType] * targetCountry.feature.properties.POP2005/targetCountry.feature.properties.AREA
+        let countryCasualities = Math.floor(nukePower[nukeType] * targetCountry.feature.properties.POP2005/targetCountry.feature.properties.AREA)
         if(countryCasualities > targetCountry.feature.properties.POP2005){
             targetCountry.feature.properties.POP2005 = 0;
         }else{

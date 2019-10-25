@@ -12,27 +12,15 @@ body {
   z-index: 1;
 }
 
-#info{
+#start_div{
   position: absolute;
-  bottom: 0;
-  left: 0;
-  z-index: 2;
-  font-size: 15px;
+  width: 25%;
+  height: 5%;
+  background-color: #212121;
+  bottom: 0px;
+  right: 37.5%;
+  z-index: 3;
 }
-
-#test {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 200px;
-  height: 80px;
-  z-index: 2;
-}
-
-#test input {
-  width : 100%;
-}
-
 .leaflet-popup-content p{
   margin: 0 !important;
 }

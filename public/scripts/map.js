@@ -111,7 +111,7 @@ addCircle = function(lon, lat, r, c="red"){
     L.circle([lon, lat],{
         color: c,
         radius: r
-    }).addTo(map)
+    }).addTo(map).bringToBack()
 }
 
 
@@ -155,14 +155,5 @@ createNukePath = function(LatStart, LonStart, LatEnd, LonEnd){
         let lonEnd = document.getElementById("endLon").value
         createNukePath(latStart, lonStart, latEnd, lonEnd)
     }
-    //pokazywanie kordów u góry
-    map.on('mousemove', function (e) {
-        document.getElementById('info').innerHTML = JSON.stringify(e.latlng);
-        });
     
     
-// ------------- koniec funkcji debug
-// lat - góra/dół(y), lon - lewo/prawo(x)
-
-
-// map._layers[155]._bounds

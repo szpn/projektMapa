@@ -9,21 +9,10 @@ html
         script(src="../scripts/Leaflet.Geodesic.js")
     body
 
-    #test
-        .inputField
-            input#nukeLat(type="number" placeholder="latitude(-90 to +90)(góra/dół)")
-            input#nukeLon(type="number" placeholder="lontitude(-180 to +180)")
-            input#nukeR(type="number" placeholder="radius(m)")
-            input(type="button" value="SEND" onClick="sendNuke()")
-            hr
-            input#startLat(type="number" placeholder="latitude start" value=30)
-            input#startLon(type="number" placeholder="lontitude start" value=-10)
-            input#endLat(type="number" placeholder="latitude end" value=20)
-            input#endLon(type="number" placeholder="lontitude end" value=70)
-            input(type="button" value="SEND" onClick="generatePath()")
-    #info
-        ss
 
     #map
         script(src="../scripts/map.js")
     script(src="../scripts/war.js")
+
+    #start_div
+        button() START
