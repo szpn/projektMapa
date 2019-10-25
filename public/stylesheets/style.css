@@ -12,6 +12,14 @@ body {
   z-index: 1;
 }
 
+#info{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  font-size: 15px;
+}
+
 #test {
   position: absolute;
   top: 0;
