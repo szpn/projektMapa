@@ -10,6 +10,7 @@ L.tileLayer("https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=sctVNN0KK6Z
     attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">© MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">© OpenStreetMap contributors</a>'
 }).addTo(map);
 
+let G;
 
 // https://stackoverflow.com/questions/17633462/format-a-javascript-number-with-a-metric-prefix-like-1-5k-1m-1g-etc
 var ranges = [
@@ -31,11 +32,13 @@ function formatNumber(n) {
 
 generatePopupString = function(layer){
     let debugCountryControlString = '<p>dodaj/usun mieszkańców(-∞ to +∞)</p> <input type="number" id="popToAdd")"></input> <input type="button" value="dodaj/usun" onClick="modifyPopulation(' + layer._leaflet_id +')"></input>'
-    
+    let teams = ["brak(kraj neutralny)", "USA", "Rosja"]
+
     let countryName = layer.feature.properties.NAME;
     let countryPopulation =  formatNumber(layer.feature.properties.POP2005);
-    let countryArea = layer.feature.properties.AREA
-    let popupString = "<p>Country: " + countryName + "</p><p> Population: " + countryPopulation + "</p><p> Pole powierzchni: " + countryArea + "</p>"
+    let countryArea = formatNumber(layer.feature.properties.AREA);
+    let team = layer.feature.properties.SOJUSZ;
+    let popupString = "<p>Kraj: " + countryName + "</p><p> Populacja: " + countryPopulation + "</p><p> Pole powierzchni: " + countryArea + " km²</p><p> Sojusz: " + teams[team] + "</p>" 
     return popupString + debugCountryControlString
 }
 
@@ -54,7 +57,7 @@ d3.json("./json/outputPrecision1.json").then(function(data){
         let layer = e.target;
         layer.bindPopup(generatePopupString(layer)) // zrobić miejsce poupa na bazie layer.feature.properties.lat/lon
         console.log(layer.feature.properties)
-        console.log(layer)
+        //console.log(layer)
         layer.openPopup()
         // layer.setStyle({
         //     color: "#000",
@@ -78,19 +81,28 @@ d3.json("./json/outputPrecision1.json").then(function(data){
             fillOpacity: 0.3
         })
     }
-    
-    let countryBoundaries = L.geoJSON(data,{
-        style : {
-            fillColor: "#E0E0E0",
+
+    boundaryStyle = function(feature){
+        let boundaryColors = ["#E0E0E0", "#4285F4", "#EA4335"]
+        style = {
+            fillColor: boundaryColors[feature.properties.SOJUSZ],
             fillOpacity: 0.3,
             color: "#212121",
             weight: 2,
-            opacity: 0.2
-        },
+            opacity: 0.2,
+        }
+        return style
+    }
+    
+    let countryBoundaries = L.geoJSON(data,{
+        style : boundaryStyle,
         onEachFeature: onEachFeature,
         
     }).addTo(map)
-    
+
+    G = new Game(map)
+    G.start()
+
 })
 // -------------
 
@@ -119,10 +131,9 @@ createNukePath = function(LatStart, LonStart, LatEnd, LonEnd){
         className: "line",
         weight: 4, 
         opacity: 0.5,
-        color: 'blue',
+        color: 'black',
         steps: 30,
-        snakingSpeed: 2000
-    }).addTo(map).snakeIn();
+    }).addTo(map)
     return Geodesic
     }
 
