@@ -12,7 +12,6 @@ L.tileLayer("https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=sctVNN0KK6Z
 
 let G;
 
-// https://stackoverflow.com/questions/17633462/format-a-javascript-number-with-a-metric-prefix-like-1-5k-1m-1g-etc
 var ranges = [
     { divider: 1e9 , suffix: 'MLD' },
     { divider: 1e6 , suffix: 'MLN' },
@@ -31,7 +30,7 @@ function formatNumber(n) {
 
 
 generatePopupString = function(layer){
-    let debugCountryControlString = '<p>dodaj/usun mieszkańców(-∞ to +∞)</p> <input type="number" id="popToAdd")"></input> <input type="button" value="dodaj/usun" onClick="modifyPopulation(' + layer._leaflet_id +')"></input>'
+    //let debugCountryControlString = '<p>dodaj/usun mieszkańców(-∞ to +∞)</p> <input type="number" id="popToAdd")"></input> <input type="button" value="dodaj/usun" onClick="modifyPopulation(' + layer._leaflet_id +')"></input>'
     let teams = ["brak(kraj neutralny)", "USA", "Rosja"]
 
     let countryName = layer.feature.properties.NAME;
@@ -39,7 +38,7 @@ generatePopupString = function(layer){
     let countryArea = formatNumber(layer.feature.properties.AREA);
     let team = layer.feature.properties.SOJUSZ;
     let popupString = "<p>Kraj: " + countryName + "</p><p> Populacja: " + countryPopulation + "</p><p> Pole powierzchni: " + countryArea + " km²</p><p> Sojusz: " + teams[team] + "</p>" 
-    return popupString + debugCountryControlString
+    return popupString
 }
 
 
@@ -56,13 +55,7 @@ d3.json("./json/outputPrecision1.json").then(function(data){
     onCountryClick = function(e){
         let layer = e.target;
         layer.bindPopup(generatePopupString(layer)) // zrobić miejsce poupa na bazie layer.feature.properties.lat/lon
-        console.log(layer.feature.properties)
-        //console.log(layer)
         layer.openPopup()
-        // layer.setStyle({
-        //     color: "#000",
-        //     opacity: 1
-        // })
     }
     onCountryMouseOver = function(e){
         let layer = e.target;
@@ -130,7 +123,7 @@ createNukePath = function(LatStart, LonStart, LatEnd, LonEnd){
     let Geodesic = L.geodesic([[StartPos,EndPos]], {
         className: "line",
         weight: 4, 
-        opacity: 0.5,
+        opacity: 0.2,
         color: 'black',
         steps: 30,
     }).addTo(map)

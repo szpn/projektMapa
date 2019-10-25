@@ -1,6 +1,7 @@
 html,
 body {
   height: 100%;
+  margin: 0px;
 }
 
 #map {
@@ -14,13 +15,37 @@ body {
 
 #start_div{
   position: absolute;
-  width: 25%;
+  width: 40%;
   height: 5%;
   background-color: #212121;
   bottom: 0px;
-  right: 37.5%;
+  right: 30%;
   z-index: 3;
+  /* text-align:center;
+  margin:auto; */
 }
+
+.start_p{
+  font-family: arial;
+  text-align: center;
+  color: white;
+  width: 29%;
+  display: inline-block;
+}
+.start_button {
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #555555;
+  width:  40%;
+  height: 100%;
+}
+
 .leaflet-popup-content p{
   margin: 0 !important;
 }

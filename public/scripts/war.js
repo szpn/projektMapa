@@ -58,9 +58,15 @@ class Game{
         let targetCountry
         if (attackingSide == 1){
             let targetCountryIndex = Math.floor(Math.random() * this.RUSSIA.length)
+            while(this.RUSSIA[targetCountryIndex].feature.properties.POP2005 == 0){
+                targetCountryIndex = Math.floor(Math.random() * this.RUSSIA.length)
+            }
             targetCountry = this.RUSSIA[targetCountryIndex]
         }else if (attackingSide == 2){
             let targetCountryIndex = Math.floor(Math.random() * this.USA.length)
+            while(this.USA[targetCountryIndex].feature.properties.POP2005 == 0){
+                targetCountryIndex = Math.floor(Math.random() * this.USA.length)
+            }
             targetCountry = this.USA[targetCountryIndex]
         }
         return targetCountry
@@ -98,20 +104,34 @@ class Game{
         let nukePower = [100000,1000,10]
         let countryCasualities = Math.floor(nukePower[nukeType] * targetCountry.feature.properties.POP2005/targetCountry.feature.properties.AREA)
         if(countryCasualities > targetCountry.feature.properties.POP2005){
+            countryCasualities = targetCountry.feature.properties.POP2005;
             targetCountry.feature.properties.POP2005 = 0;
         }else{
             targetCountry.feature.properties.POP2005 -= countryCasualities
         }
         this.casualities += countryCasualities
-        console.log(countryCasualities)
         createNukePath(startingCountry.feature.properties.LAT, startingCountry.feature.properties.LON, targetCountry.feature.properties.LAT, targetCountry.feature.properties.LON)
         addCircle(targetCountry.feature.properties.LAT, targetCountry.feature.properties.LON, nukeRadiuses[nukeType], "black")
     }
 
+    updateP = function(){
+        document.getElementById("bombs").innerHTML = sentNukes;
+        document.getElementById("dead").innerHTML = formatNumber(this.casualities);
+    }
     run = function(){
         let a = this.generateNukeParameters()
         this.sendNuke(a)
+        this.updateP()
     }
 
+}
+
+let sentNukes = 1
+startWar = function(){
+    G.run()
+   setInterval(function(){
+       sentNukes++;
+       G.run()
+   }, 5000/Math.pow(sentNukes,1/2)); 
 }
 

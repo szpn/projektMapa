@@ -15,4 +15,8 @@ html
     script(src="../scripts/war.js")
 
     #start_div
-        button() START
+        p.start_p Liczba wysłanych bomb: 
+            span#bombs 0
+        button.start_button(onClick="startWar()") START
+        p.start_p Straty: 
+            span#dead 0
