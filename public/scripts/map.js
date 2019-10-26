@@ -12,6 +12,11 @@ L.tileLayer("https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=sctVNN0KK6Z
 
 let G;
 
+$(window).on('load', function(){
+    $('.preloader').fadeOut('slow');
+});
+
+
 var ranges = [
     { divider: 1e9 , suffix: 'MLD' },
     { divider: 1e6 , suffix: 'MLN' },
