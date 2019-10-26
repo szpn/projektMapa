@@ -12,10 +12,6 @@ L.tileLayer("https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=sctVNN0KK6Z
 
 let G;
 
-$(window).on('load', function(){
-    $('.preloader').fadeOut('slow');
-});
-
 
 var ranges = [
     { divider: 1e9 , suffix: 'MLD' },
@@ -49,7 +45,7 @@ generatePopupString = function(layer){
 
 // ------------- wczytanie JSON, stworzenie kontur na jego bazie, dodanie funkcji dla: click, hover, unhover
 d3.json("./json/outputPrecision1.json").then(function(data){
-    
+     $('.preloader').fadeOut('slow');
     onEachFeature = function(feature, layer){
         layer.on({
             click : onCountryClick,
