@@ -80,7 +80,7 @@ class Game{
         let y_min = bounds.getNorth();
         let lat = y_min + (Math.random() * (y_max - y_min));
         let lng = x_min + (Math.random() * (x_max - x_min));
-
+    
         return [lat,lng]
     }
 
@@ -133,7 +133,17 @@ class Game{
         document.getElementById("bombs").innerHTML = sentNukes;
         document.getElementById("dead").innerHTML = formatNumber(this.casualities);
     }
+
+    checkIfEnd = function(){
+        if(sentNukes > 70 || this.casualities > 800000000){
+            alert("Leciały rakiety, ludzie modlili się do swoich bogów i żegnali z rodzinami i przyjaciółmi. Śmierć była pewniejsza od życia w każdym zakątku planety. Ile jeszcze spadło bomb? Nieistotne. Reszta i tak zginęła podczas nuklearnej zimy spowijającej obie półkule. Kto był winny? Błąd programu? Czyjaś rządza władzy? Nikt nie wie. Światowi przywódcy mogli temu zapobiec. Już jednak na to za późno. Choroba popromienna zjada moją skórę i oddech. Za chwilę znów się zobaczymy ~Nieznany")
+            return true
+        }
+    }
     run = function(){
+        if(this.checkIfEnd()){
+            return true
+        }
         let a = this.generateNukeParameters()
         this.sendNuke(a)
         this.updateP()
@@ -141,13 +151,24 @@ class Game{
 
 }
 
-let sentNukes = 0
+let timeouts = []
+
+clearTimeouts = function(){
+    for (var i=0; i<timeouts.length; i++) {
+        clearTimeout(timeouts[i]);
+}
+}
+
+let sentNukes = 1
 startWar = function(){
+    G.run()
     for(let i = 1; i < 1000; i++){
-        setTimeout(function(){
+        timeouts.push(setTimeout(function(){
             sentNukes++;
-            G.run()
-        }, 5000/Math.pow(i,1/4) * i);
+            if(G.run()){
+                clearTimeouts()
+            }
+        }, 5000/Math.pow(i,1/4) * i));
 
     }
 }
