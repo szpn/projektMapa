@@ -127,6 +127,7 @@ class Game{
         let targetCountryBombCoords = this.generateRandomPosition(targetCountry)
         createNukePath(startCountryCoords[0], startCountryCoords[1],targetCountryBombCoords[0] , targetCountryBombCoords[1])
         addCircle(targetCountryBombCoords[0], targetCountryBombCoords[1], nukeRadiuses[nukeType], "black")
+        addCircle(targetCountryBombCoords[0], targetCountryBombCoords[1], nukeRadiuses[nukeType] * 2, "green")
     }
 
     updateP = function(){
